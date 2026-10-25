@@ -18,11 +18,9 @@ public static class Shot {
 
 $shots = @(
     @{ Name = 'overview-light'; Page = 'overview'; Theme = 'light' },
-    @{ Name = 'overview-dark';  Page = 'overview'; Theme = 'dark' },
+    @{ Name = 'overview-dark';  Page = 'overview'; Theme = 'dark' },   # the same view, for dark-mode visitors
     @{ Name = 'account-light';  Page = 'work';     Theme = 'light' },
-    @{ Name = 'account-dark';   Page = 'research'; Theme = 'dark' },
-    @{ Name = 'about-light';    Page = 'about';    Theme = 'light' },
-    @{ Name = 'settings-dark';  Page = 'settings'; Theme = 'dark' }
+    @{ Name = 'about-light';    Page = 'about';    Theme = 'light' }
 )
 foreach ($s in $shots) {
     $p = Start-Process $Exe -ArgumentList '--demo', '--page', $s.Page, '--theme', $s.Theme -PassThru

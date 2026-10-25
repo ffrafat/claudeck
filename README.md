@@ -54,8 +54,8 @@ in once, and it stays signed in.
 
 <table>
   <tr>
-    <td><img src="docs/assets/screenshots/account-light.png" alt="An account's page: usage, profile and management cards"></td>
-    <td><img src="docs/assets/screenshots/settings-dark.png" alt="Settings in dark mode: theme, window background and startup"></td>
+    <td><img src="docs/assets/screenshots/account-light.png" alt="An account's details page: usage, profile and management cards"></td>
+    <td><img src="docs/assets/screenshots/about-light.png" alt="The About page: developer, links and credits"></td>
   </tr>
 </table>
 

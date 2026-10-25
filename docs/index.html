@@ -32,7 +32,8 @@
          font: 16px/1.6 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
          -webkit-font-smoothing: antialiased; }
   a { color: inherit; }
-  img { max-width: 100%; display: block; }
+  /* height: auto keeps screenshots in proportion as they shrink to fit. */
+  img { max-width: 100%; height: auto; display: block; }
   .wrap { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
   h1, h2, h3 { font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif; line-height: 1.15; margin: 0; }
 
@@ -92,11 +93,17 @@
   .feature h3 { font-size: 18px; margin-bottom: 6px; }
   .feature p { margin: 0; color: var(--muted); font-size: 15px; }
 
-  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media (max-width: 820px) { .gallery { grid-template-columns: 1fr; } }
-  .gallery figure { margin: 0; }
-  .gallery img { border-radius: 12px; border: 1px solid var(--line); box-shadow: var(--shadow); }
-  .gallery figcaption { margin-top: 12px; color: var(--muted); font-size: 15px; }
+  /* A large screenshot with its story beside it; the second row mirrors the first. */
+  .showcase { display: grid; grid-template-columns: 1.7fr 1fr; gap: 44px; align-items: center; margin-top: 44px; }
+  .showcase.flip { grid-template-columns: 1fr 1.7fr; }
+  .showcase.flip img { order: 2; }
+  .showcase img { border-radius: 12px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .showcase h3 { font-size: 24px; margin-bottom: 10px; }
+  .showcase p { margin: 0; color: var(--muted); font-size: 17px; }
+  @media (max-width: 860px) {
+    .showcase, .showcase.flip { grid-template-columns: 1fr; gap: 20px; }
+    .showcase.flip img { order: 0; }
+  }
 
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
   @media (max-width: 820px) { .steps { grid-template-columns: 1fr; } }
@@ -236,24 +243,19 @@
     <div class="wrap">
       <div class="kicker">A closer look</div>
       <h2 class="title">Details when you want them.</h2>
-      <p class="intro">Each account has its own page, laid out like Windows Settings: its limits, what this week went on, its chats and folder, and everything you can change about it.</p>
-      <div class="gallery">
-        <figure>
-          <img src="assets/screenshots/account-light.png" width="1120" height="760" alt="An account's page in ClauDeck" loading="lazy">
-          <figcaption>An account's page: start or stop it, its limits, and its avatar colour.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/screenshots/account-dark.png" width="1120" height="760" alt="An account close to its limit, in dark mode" loading="lazy">
-          <figcaption>Close to a limit? You see it before Claude tells you.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/screenshots/settings-dark.png" width="1120" height="760" alt="ClauDeck's settings in dark mode" loading="lazy">
-          <figcaption>Light, dark or your system's choice, on Mica, Mica Alt or Acrylic.</figcaption>
-        </figure>
-        <figure>
-          <img src="assets/screenshots/about-light.png" width="1120" height="760" alt="ClauDeck's About page with credits" loading="lazy">
-          <figcaption>Open source, with credit where it's due.</figcaption>
-        </figure>
+      <div class="showcase">
+        <img src="assets/screenshots/account-light.png" width="1120" height="760" alt="An account's details page in ClauDeck" loading="lazy">
+        <div>
+          <h3>Every account, in detail</h3>
+          <p>Each account has its own page, laid out like Windows Settings. Start or stop its Claude, see its 5-hour and weekly limits with reset times, what this week went on, its chats and folder, and pick its avatar colour.</p>
+        </div>
+      </div>
+      <div class="showcase flip">
+        <img src="assets/screenshots/about-light.png" width="1120" height="760" alt="ClauDeck's About page with developer and credits" loading="lazy">
+        <div>
+          <h3>Open source, with credit where it's due</h3>
+          <p>Free under the MIT licence, with every line on GitHub. The About page names who made it, the projects it builds on, and exactly what it sends where: each account's limits from Anthropic, and nothing else.</p>
+        </div>
       </div>
     </div>
   </section>
