@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="ClauDeck">
+  <rect x="6" y="6" width="116" height="116" rx="28" fill="#D97757"/>
+  <g transform="rotate(-14 64 66)">
+    <rect x="31" y="34" width="16" height="62" rx="8" fill="#FAF9F5" opacity=".45"/>
+    <rect x="56" y="34" width="16" height="62" rx="8" fill="#FAF9F5" opacity=".72"/>
+    <rect x="81" y="34" width="16" height="62" rx="8" fill="#FAF9F5"/>
+  </g>
+</svg>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ClauDeck.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Background="Transparent">
+
+    <Page.Resources>
+        <Style x:Key="LinkRowStyle" TargetType="HyperlinkButton">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,2,0,0" />
+        </Style>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <StackPanel Padding="36,8,36,36" MaxWidth="1000" HorizontalAlignment="Stretch" Spacing="4">
+
+            <Grid ColumnSpacing="20" Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image x:Name="Logo" Width="72" Height="72" />
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}">
+                        <Run Text="ClauDeck" /><Run Text=" for Windows" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    </TextBlock>
+                    <TextBlock Text="Multiple Claude Desktops, in parallel" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock x:Name="VersionText" Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorTertiaryBrush}" />
+                </StackPanel>
+            </Grid>
+
+            <TextBlock Text="Made by" Style="{StaticResource SectionHeaderStyle}" />
+            <Border Style="{StaticResource CardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <PersonPicture DisplayName="Faisal F Rafat" Width="40" Height="40" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Faisal F Rafat" Style="{StaticResource CardTitleStyle}" />
+                        <TextBlock Text="Designed and built ClauDeck" Style="{StaticResource CardDescriptionStyle}" />
+                    </StackPanel>
+                    <HyperlinkButton Grid.Column="2" Content="@ffrafat on GitHub" NavigateUri="https://github.com/ffrafat" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <TextBlock Text="Project" Style="{StaticResource SectionHeaderStyle}" />
+            <Border Style="{StaticResource CardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE774;" FontSize="20" VerticalAlignment="Top" Margin="0,4,0,0" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Links" Style="{StaticResource CardTitleStyle}" />
+                        <HyperlinkButton Style="{StaticResource LinkRowStyle}" Content="Website: ffrafat.github.io/claudeck" NavigateUri="https://ffrafat.github.io/claudeck/" />
+                        <HyperlinkButton Style="{StaticResource LinkRowStyle}" Content="Source code on GitHub" NavigateUri="https://github.com/ffrafat/claudeck" />
+                        <HyperlinkButton Style="{StaticResource LinkRowStyle}" Content="Downloads and release notes" NavigateUri="https://github.com/ffrafat/claudeck/releases" />
+                        <HyperlinkButton Style="{StaticResource LinkRowStyle}" Content="Report a problem or suggest something" NavigateUri="https://github.com/ffrafat/claudeck/issues" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <TextBlock Text="Credits" Style="{StaticResource SectionHeaderStyle}" />
+            <Border Style="{StaticResource CardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE8D4;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="claude-graft by Aaditya Vitthal More · MIT" Style="{StaticResource CardTitleStyle}" />
+                        <TextBlock Style="{StaticResource CardDescriptionStyle}"
+                                   Text="The macOS app whose approach ClauDeck follows: a separate Claude profile per account, and reading each account's plan limits with the login it already holds." />
+                    </StackPanel>
+                    <HyperlinkButton Grid.Column="2" Content="View" NavigateUri="https://github.com/aaditya-v-more/claude-graft" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+            <Border Style="{StaticResource CardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE8D4;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Claude Profile Switcher by Priyanshu (PriyanshuGeTRekT) · MIT" Style="{StaticResource CardTitleStyle}" />
+                        <TextBlock Style="{StaticResource CardDescriptionStyle}"
+                                   Text="The Windows profile launcher ClauDeck grew out of. Its way of writing icon files and of finding Claude's desktop processes are carried over here." />
+                    </StackPanel>
+                    <HyperlinkButton Grid.Column="2" Content="View" NavigateUri="https://github.com/PriyanshuGeTRekT/Claude-Code-Desktop-Switcher" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+            <Border Style="{StaticResource CardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE943;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Built with" Style="{StaticResource CardTitleStyle}" />
+                        <TextBlock Style="{StaticResource CardDescriptionStyle}"
+                                   Text="Windows App SDK and WinUI 3, .NET, C#/WinRT and System.Drawing.Common by Microsoft, all MIT. Installer made with Inno Setup by Jordan Russell and Martijn Laan." />
+                    </StackPanel>
+                    <HyperlinkButton Grid.Column="2" Content="Notices" NavigateUri="https://github.com/ffrafat/claudeck/blob/main/THIRD-PARTY-NOTICES.md" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <TextBlock Text="Licence and privacy" Style="{StaticResource SectionHeaderStyle}" />
+            <Border Style="{StaticResource CardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE8A5;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="MIT licence · © 2026 Faisal F Rafat" Style="{StaticResource CardTitleStyle}" />
+                        <TextBlock Text="Free to use, change and share, with this notice kept." Style="{StaticResource CardDescriptionStyle}" />
+                    </StackPanel>
+                    <HyperlinkButton Grid.Column="2" Content="Read" NavigateUri="https://github.com/ffrafat/claudeck/blob/main/LICENSE" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+            <Border Style="{StaticResource CardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE72E;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Your data stays on this PC" Style="{StaticResource CardTitleStyle}" />
+                        <TextBlock Style="{StaticResource CardDescriptionStyle}"
+                                   Text="No accounts, no telemetry. To show plan limits, ClauDeck sends each account's existing access token to api.anthropic.com and nowhere else; it never uses or changes the long-term login." />
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <Border Style="{StaticResource CardStyle}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE7BA;" FontSize="20" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="Not affiliated with Anthropic" Style="{StaticResource CardTitleStyle}" />
+                        <TextBlock Style="{StaticResource CardDescriptionStyle}"
+                                   Text="ClauDeck is an independent project, not made, endorsed or supported by Anthropic. Claude and the Claude logo are trademarks of Anthropic, PBC. Account avatars are drawn from the Claude app installed on this PC; ClauDeck does not include Claude's artwork. Using several accounts is subject to Anthropic's terms." />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

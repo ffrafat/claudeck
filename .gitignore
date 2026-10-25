@@ -1,0 +1,6 @@
+# Build output (also kept outside the tree by Directory.Build.props)
+bin/
+obj/
+artifacts/
+*.user
+.vs/

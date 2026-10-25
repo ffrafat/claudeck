@@ -1,0 +1,8 @@
+<Project>
+  <!-- This folder sits deep enough that obj\ and bin\ paths pass Windows' 260-character
+       limit, so build output goes to a short folder instead. -->
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(TEMP)\claudeck-build\obj\</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(TEMP)\claudeck-build\bin\</BaseOutputPath>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClauDeck for Windows: multiple Claude Desktops, in parallel</title>
+<meta name="description" content="Run every Claude Desktop account you have side by side on Windows, each signed in for good, with live usage limits for all of them. Free and open source.">
+<meta property="og:title" content="ClauDeck for Windows">
+<meta property="og:description" content="Multiple Claude Desktops, in parallel. Every account signed in, side by side, with live limits.">
+<meta property="og:image" content="https://ffrafat.github.io/claudeck/assets/screenshots/overview-light.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<style>
+  :root {
+    --clay: #D97757; --clay-deep: #B85C3E; --clay-soft: #F4DED4;
+    --bg: #FAF9F5; --bg-alt: #F0EEE6; --card: #FFFFFF; --line: #E4E1D8;
+    --ink: #1F1E1D; --muted: #6B6862; --faint: #8F8B83;
+    --shadow: 0 30px 80px -30px rgba(31,30,29,.35), 0 8px 24px -12px rgba(31,30,29,.18);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --clay-soft: #3A2A23;
+      --bg: #191918; --bg-alt: #201F1D; --card: #262624; --line: #34322F;
+      --ink: #F0EEE6; --muted: #B4B0A7; --faint: #8A867E;
+      --shadow: 0 30px 80px -30px rgba(0,0,0,.7), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.6 "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+         -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+  h1, h2, h3 { font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif; line-height: 1.15; margin: 0; }
+
+  /* Header */
+  header { position: sticky; top: 0; z-index: 10; backdrop-filter: saturate(180%) blur(16px);
+           background: color-mix(in srgb, var(--bg) 82%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent); }
+  .bar { display: flex; align-items: center; gap: 24px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 650; font-size: 18px; }
+  .brand img { width: 30px; height: 30px; }
+  .brand small { font-weight: 400; color: var(--muted); }
+  nav { margin-left: auto; display: flex; gap: 22px; font-size: 15px; }
+  nav a { text-decoration: none; color: var(--muted); }
+  nav a:hover { color: var(--ink); }
+  @media (max-width: 720px) { nav .opt { display: none; } }
+
+  /* Hero */
+  .hero { padding: 72px 0 40px; text-align: center; position: relative; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; inset: -40% -10% auto; height: 640px; z-index: -1;
+                  background: radial-gradient(closest-side, color-mix(in srgb, var(--clay) 22%, transparent), transparent); }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px;
+             background: var(--clay-soft); color: var(--clay-deep); font-size: 13px; font-weight: 600; }
+  @media (prefers-color-scheme: dark) { .eyebrow { color: #F0A78A; } }
+  .hero h1 { font-size: clamp(40px, 7vw, 72px); letter-spacing: -1.5px; margin: 22px 0 14px; }
+  .hero h1 span { color: var(--clay); }
+  .hero p.lead { font-size: clamp(18px, 2.4vw, 22px); color: var(--muted); max-width: 680px; margin: 0 auto 32px; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 12px; font-weight: 600;
+         text-decoration: none; border: 1px solid var(--line); background: var(--card); transition: transform .15s ease, box-shadow .15s ease; }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 20px -10px rgba(0,0,0,.3); }
+  .btn.primary { background: var(--clay); border-color: var(--clay); color: #fff; }
+  .btn.primary:hover { background: var(--clay-deep); }
+  .btn svg { width: 20px; height: 20px; flex: none; }
+  .btn .sub { font-weight: 400; opacity: .85; font-size: 14px; }
+  .fine { margin-top: 16px; font-size: 14px; color: var(--faint); }
+  .shot { margin: 56px auto 0; max-width: 1040px; border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--line); }
+
+  /* Sections */
+  section { padding: 84px 0; }
+  section.alt { background: var(--bg-alt); }
+  .kicker { color: var(--clay); font-weight: 650; font-size: 14px; letter-spacing: .4px; text-transform: uppercase; }
+  .title { font-size: clamp(30px, 4.4vw, 44px); letter-spacing: -.8px; margin: 8px 0 14px; }
+  .intro { color: var(--muted); font-size: 18px; max-width: 720px; margin: 0 0 40px; }
+
+  .problem { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 820px) { .problem { grid-template-columns: 1fr; } }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 28px; }
+  .panel h3 { font-size: 20px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .panel p { margin: 0; color: var(--muted); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 960px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+  .feature { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
+  .feature .icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--clay-soft); color: var(--clay); margin-bottom: 16px; }
+  .feature .icon svg { width: 22px; height: 22px; }
+  .feature h3 { font-size: 18px; margin-bottom: 6px; }
+  .feature p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 820px) { .gallery { grid-template-columns: 1fr; } }
+  .gallery figure { margin: 0; }
+  .gallery img { border-radius: 12px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .gallery figcaption { margin-top: 12px; color: var(--muted); font-size: 15px; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: step; }
+  @media (max-width: 820px) { .steps { grid-template-columns: 1fr; } }
+  .step { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 26px; }
+  .step::before { counter-increment: step; content: counter(step); display: grid; place-items: center; width: 34px; height: 34px;
+                  border-radius: 50%; background: var(--clay); color: #fff; font-weight: 700; margin-bottom: 14px; }
+  .step h3 { font-size: 18px; margin-bottom: 6px; }
+  .step p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  .trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .trust { grid-template-columns: 1fr; } }
+
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 22px; margin-bottom: 12px; }
+  summary { cursor: pointer; font-weight: 600; font-size: 17px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--clay); font-size: 22px; line-height: 1; }
+  details[open] summary::after { content: "–"; }
+  details p { color: var(--muted); margin: 12px 0 0; }
+
+  .cta-band { text-align: center; }
+  .cta-band .title { margin-bottom: 10px; }
+
+  footer { border-top: 1px solid var(--line); padding: 44px 0 56px; color: var(--muted); font-size: 14px; }
+  .foot { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; }
+  @media (max-width: 820px) { .foot { grid-template-columns: 1fr; } }
+  footer h4 { color: var(--ink); margin: 0 0 10px; font-size: 15px; }
+  footer ul { list-style: none; padding: 0; margin: 0; }
+  footer li { margin: 6px 0; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--ink); }
+  .legal { margin-top: 32px; font-size: 13px; color: var(--faint); max-width: 860px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top"><img src="assets/logo.svg" alt="">ClauDeck <small>for Windows</small></a>
+    <nav>
+      <a class="opt" href="#features">Features</a>
+      <a class="opt" href="#how">How it works</a>
+      <a class="opt" href="#faq">FAQ</a>
+      <a href="https://github.com/ffrafat/claudeck">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <span class="eyebrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5 10 4.5v7H3zM11 4.4 21 3v8.5H11zM3 12.5h7v7l-7-1zM11 12.5h10V21l-10-1.4z"/></svg>
+        Made for Windows 10 and 11
+      </span>
+      <h1>ClauDeck <span>for Windows</span></h1>
+      <p class="lead">Multiple Claude Desktops, in parallel. Every account you have, side by side, each signed in for good, with live usage limits for all of them.</p>
+      <div class="ctas">
+        <a class="btn primary" id="dl-setup" href="https://github.com/ffrafat/claudeck/releases/latest">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          Download for Windows <span class="sub" id="dl-size"></span>
+        </a>
+        <a class="btn" id="dl-zip" href="https://github.com/ffrafat/claudeck/releases/latest">Portable zip</a>
+        <a class="btn" href="https://github.com/ffrafat/claudeck">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+          Source code
+        </a>
+      </div>
+      <p class="fine"><span id="dl-version">Free and open source</span> · MIT licence · No administrator rights needed</p>
+      <div class="shot">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="assets/screenshots/overview-dark.png">
+          <img src="assets/screenshots/overview-light.png" width="1120" height="760" alt="ClauDeck's overview: four Claude accounts with their 5-hour and weekly limits, two of them running">
+        </picture>
+      </div>
+    </div>
+  </div>
+
+  <section class="alt">
+    <div class="wrap">
+      <div class="kicker">Why it exists</div>
+      <h2 class="title">One login at a time was never enough.</h2>
+      <p class="intro">Claude Desktop holds a single account. With a personal account and a work one, or one per client, you spend the day signing out and back in. Mac users have tools for this. On Windows there was nothing that held up.</p>
+      <div class="problem">
+        <div class="panel">
+          <h3><span class="dot" style="background:#C0392B"></span>Without ClauDeck</h3>
+          <p>Sign out, sign in, lose your place. Profile tricks that used to work now open on your main account's data after a Claude update, and one wrong click signs your main account out.</p>
+        </div>
+        <div class="panel">
+          <h3><span class="dot" style="background:#2E7D4F"></span>With ClauDeck</h3>
+          <p>Every account has its own Claude window, data and sign-in, all running at once. Sign each one in once. ClauDeck checks every launch landed in the right place, so nothing gets mixed up.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="kicker">Features</div>
+      <h2 class="title">Everything about your accounts, in one window.</h2>
+      <p class="intro">A native Windows 11 app, built with WinUI 3. It sits in your notification area and stays out of the way until you need it.</p>
+      <div class="grid">
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="8" height="16" rx="2"/><rect x="13" y="4" width="8" height="16" rx="2"/></svg></div>
+          <h3>Every account in parallel</h3>
+          <p>Start, bring to front or stop each account's Claude from one place. They all run side by side under your one Windows user.</p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+          <h3>Signed in for good</h3>
+          <p>No more signing out to switch. Each account keeps its own login, so it opens straight into your work every time.</p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M7 15V9m5 6V5m5 10v-3"/></svg></div>
+          <h3>Live limits for all of them</h3>
+          <p>5-hour and weekly usage with reset times, even for accounts that aren't open. Amber at 70%, red at 90%.</p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="4"/><circle cx="16" cy="15" r="4"/></svg></div>
+          <h3>Tell your Claudes apart</h3>
+          <p>Each account gets a coloured avatar, and its Claude icon in the notification area turns the same colour, with its name on hover.</p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg></div>
+          <h3>Feels like Windows 11</h3>
+          <p>Mica or Acrylic, light and dark, a Settings-style sidebar and Windows' own dialogs. It looks like it shipped with your PC.</p>
+        </div>
+        <div class="feature">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <h3>Safe by design</h3>
+          <p>After every launch ClauDeck checks which folder Claude really used, and warns you instead of letting one account land on another's data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <div class="kicker">A closer look</div>
+      <h2 class="title">Details when you want them.</h2>
+      <p class="intro">Each account has its own page, laid out like Windows Settings: its limits, what this week went on, its chats and folder, and everything you can change about it.</p>
+      <div class="gallery">
+        <figure>
+          <img src="assets/screenshots/account-light.png" width="1120" height="760" alt="An account's page in ClauDeck" loading="lazy">
+          <figcaption>An account's page: start or stop it, its limits, and its avatar colour.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/account-dark.png" width="1120" height="760" alt="An account close to its limit, in dark mode" loading="lazy">
+          <figcaption>Close to a limit? You see it before Claude tells you.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/settings-dark.png" width="1120" height="760" alt="ClauDeck's settings in dark mode" loading="lazy">
+          <figcaption>Light, dark or your system's choice, on Mica, Mica Alt or Acrylic.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/screenshots/about-light.png" width="1120" height="760" alt="ClauDeck's About page with credits" loading="lazy">
+          <figcaption>Open source, with credit where it's due.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="kicker">How it works</div>
+      <h2 class="title">Three steps, then forget about it.</h2>
+      <p class="intro">ClauDeck uses the Claude Desktop you already have. Your main Claude stays exactly as it is and still opens from Start as usual.</p>
+      <div class="steps">
+        <div class="step"><h3>Install and open</h3><p>Your usual Claude account is already there, with its limits.</p></div>
+        <div class="step"><h3>Add an account</h3><p>Give it a name and sign in once in the Claude window that opens. It gets its own data folder and colour.</p></div>
+        <div class="step"><h3>Start any of them</h3><p>Start, switch to or stop each one from ClauDeck, the tray, or its own shortcut in Start.</p></div>
+      </div>
+      <div class="trust" style="margin-top:16px">
+        <div class="panel"><h3>Your data stays here</h3><p>No account, no telemetry. To show limits, each account's existing access token goes to api.anthropic.com and nowhere else.</p></div>
+        <div class="panel"><h3>Logins are never touched</h3><p>ClauDeck never uses or changes the long-term login, so it can't sign anything out. Uninstalling keeps your accounts unless you choose otherwise.</p></div>
+        <div class="panel"><h3>Open source</h3><p>Every line is on GitHub under the MIT licence. Build it yourself with one script.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="alt">
+    <div class="wrap">
+      <div class="kicker">Questions</div>
+      <h2 class="title">Good to know.</h2>
+      <details><summary>Does ClauDeck change my normal Claude?</summary><p>No. Your main account keeps using Claude's own data and opens from Start exactly as before. Extra accounts run the same installed Claude, each with a folder of its own.</p></details>
+      <details><summary>Why does Windows say "Windows protected your PC"?</summary><p>ClauDeck isn't code-signed yet, so SmartScreen doesn't recognise it. Choose More info, then Run anyway. Each release lists SHA-256 checksums so you can check your download.</p></details>
+      <details><summary>Anything to watch out for when signing in?</summary><p>Sign in inside the new account's Claude window. If signing in sends you to your web browser and back, Windows hands that link to your main Claude, so leave your other Claude windows alone until it finishes. Afterwards, check that each account shows the right email in ClauDeck.</p></details>
+      <details><summary>What happens when Claude updates?</summary><p>Accounts keep working as they are. ClauDeck checks every launch landed in that account's own folder, and if an update ever changes how Claude stores its data, it warns you and offers to close the window, before anything can be signed out.</p></details>
+      <details><summary>Is this allowed?</summary><p>ClauDeck only starts the Claude app you already have, with separate folders. Whether and how you use several Claude accounts is governed by Anthropic's terms, which are worth reading.</p></details>
+      <details><summary>How do I uninstall it?</summary><p>Settings → Apps → ClauDeck → Uninstall. It asks whether to keep the accounts you added. Keep them, and reinstalling brings every account back signed in. Your main Claude account is never touched either way.</p></details>
+      <details><summary>Is there a Mac version?</summary><p>ClauDeck is Windows only. On the Mac, claude-graft does the same job, and ClauDeck follows its approach.</p></details>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="wrap">
+      <h2 class="title">Stop signing out. Start ClauDeck.</h2>
+      <p class="intro" style="margin:0 auto 28px">Free, open source, and made for Windows.</p>
+      <div class="ctas">
+        <a class="btn primary" id="dl-setup-2" href="https://github.com/ffrafat/claudeck/releases/latest">Download for Windows</a>
+        <a class="btn" href="https://github.com/ffrafat/claudeck/releases">All releases</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="#top"><img src="assets/logo.svg" alt="">ClauDeck <small>for Windows</small></a>
+        <p>Designed and built by <a href="https://github.com/ffrafat"><strong>Faisal F Rafat</strong></a>.</p>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/ffrafat/claudeck">Source code</a></li>
+          <li><a href="https://github.com/ffrafat/claudeck/releases">Releases</a></li>
+          <li><a href="https://github.com/ffrafat/claudeck/issues">Report a problem</a></li>
+          <li><a href="https://github.com/ffrafat/claudeck/blob/main/LICENSE">MIT licence</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Credits</h4>
+        <ul>
+          <li><a href="https://github.com/aaditya-v-more/claude-graft">claude-graft</a> by Aaditya Vitthal More</li>
+          <li><a href="https://github.com/PriyanshuGeTRekT/Claude-Code-Desktop-Switcher">Claude Profile Switcher</a> by Priyanshu</li>
+          <li><a href="https://github.com/ffrafat/claudeck/blob/main/THIRD-PARTY-NOTICES.md">All notices</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal">ClauDeck is an independent project. It is not made, endorsed or supported by Anthropic. Claude and the Claude logo are trademarks of Anthropic, PBC. ClauDeck doesn't include Claude's artwork; account avatars are drawn from the Claude app on your own PC. © 2026 Faisal F Rafat.</p>
+  </div>
+</footer>
+
+<script>
+  // Point the download buttons straight at the newest release's files. Without the
+  // network or the API they stay on the release page, which works just as well.
+  fetch("https://api.github.com/repos/ffrafat/claudeck/releases/latest")
+    .then(r => r.ok ? r.json() : Promise.reject())
+    .then(release => {
+      const setup = release.assets.find(a => /Setup.*\.exe$/i.test(a.name));
+      const zip = release.assets.find(a => /portable.*\.zip$/i.test(a.name));
+      if (setup) {
+        for (const id of ["dl-setup", "dl-setup-2"]) document.getElementById(id).href = setup.browser_download_url;
+        document.getElementById("dl-size").textContent = `· ${(setup.size / 1048576).toFixed(0)} MB`;
+      }
+      if (zip) document.getElementById("dl-zip").href = zip.browser_download_url;
+      document.getElementById("dl-version").textContent = `Version ${release.tag_name.replace(/^v/, "")} · Free and open source`;
+    })
+    .catch(() => {});
+</script>
+</body>
+</html>

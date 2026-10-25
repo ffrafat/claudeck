@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="ClauDeck.OverviewPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClauDeck"
+    Background="Transparent">
+
+    <Page.Resources>
+        <DataTemplate x:Key="AccountCard" x:DataType="local:AccountViewModel">
+            <Border Style="{StaticResource CardStyle}" Padding="20,18">
+                <StackPanel Spacing="14">
+                    <Grid ColumnSpacing="14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{x:Bind Badge, Mode=OneWay}" Width="40" Height="40" />
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Spacing="2">
+                                <TextBlock Text="{x:Bind Name, Mode=OneWay}" Style="{StaticResource BodyStrongTextBlockStyle}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
+                                <Button Style="{StaticResource EditButtonStyle}" Tag="{x:Bind Id, Mode=OneWay}" Click="OnRename" ToolTipService.ToolTip="Rename" AutomationProperties.Name="Rename">
+                                    <FontIcon Glyph="&#xE70F;" FontSize="12" />
+                                </Button>
+                            </StackPanel>
+                            <TextBlock Text="{x:Bind Subtitle, Mode=OneWay}" Style="{StaticResource CardDescriptionStyle}" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="2" Text="{x:Bind ProblemText, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource SystemFillColorCautionBrush}" VerticalAlignment="Center" />
+                    </Grid>
+
+                    <StackPanel Spacing="4">
+                        <Grid>
+                            <TextBlock Text="Session (5 hours)" Style="{StaticResource CaptionTextBlockStyle}" />
+                            <TextBlock Text="{x:Bind SessionPercent, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Right" />
+                        </Grid>
+                        <ProgressBar Value="{x:Bind SessionValue, Mode=OneWay}" Maximum="100" ShowError="{x:Bind SessionHigh, Mode=OneWay}" ShowPaused="{x:Bind SessionRaised, Mode=OneWay}" />
+                        <TextBlock Text="{x:Bind SessionResets, Mode=OneWay}" Style="{StaticResource CardDescriptionStyle}" />
+                    </StackPanel>
+
+                    <StackPanel Spacing="4">
+                        <Grid>
+                            <TextBlock Text="Weekly" Style="{StaticResource CaptionTextBlockStyle}" />
+                            <TextBlock Text="{x:Bind WeeklyPercent, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" HorizontalAlignment="Right" />
+                        </Grid>
+                        <ProgressBar Value="{x:Bind WeeklyValue, Mode=OneWay}" Maximum="100" ShowError="{x:Bind WeeklyHigh, Mode=OneWay}" ShowPaused="{x:Bind WeeklyRaised, Mode=OneWay}" />
+                        <TextBlock Text="{x:Bind WeeklyResets, Mode=OneWay}" Style="{StaticResource CardDescriptionStyle}" />
+                    </StackPanel>
+
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <!-- Details shows the account here; Start and Stop are about its Claude window. -->
+                            <Button Content="Details" Tag="{x:Bind Id, Mode=OneWay}" ToolTipService.ToolTip="Show this account's page" Click="OnDetails" MinWidth="80" />
+
+                            <Button Content="Start" Tag="{x:Bind Id, Mode=OneWay}" Style="{StaticResource AccentButtonStyle}" MinWidth="80"
+                                    Visibility="{x:Bind ShowStart, Mode=OneWay}" ToolTipService.ToolTip="Start this account's Claude window" Click="OnStart" />
+
+                            <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" Visibility="{x:Bind ShowStarting, Mode=OneWay}">
+                                <ProgressRing IsActive="{x:Bind ShowStarting, Mode=OneWay}" Width="16" Height="16" />
+                                <TextBlock Text="Starting…" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center" />
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Spacing="4" VerticalAlignment="Center" Visibility="{x:Bind ShowRunning, Mode=OneWay}">
+                                <Button Style="{StaticResource EditButtonStyle}" Tag="{x:Bind Id, Mode=OneWay}" Click="OnFront"
+                                        ToolTipService.ToolTip="Bring this Claude window to the front" AutomationProperties.Name="Bring to front">
+                                    <FontIcon Glyph="&#xE8A7;" FontSize="14" />
+                                </Button>
+                                <Ellipse Width="8" Height="8" Fill="{ThemeResource SystemFillColorSuccessBrush}" VerticalAlignment="Center" />
+                                <TextBlock Text="{x:Bind RunningText, Mode=OneWay}" Style="{StaticResource CaptionTextBlockStyle}" VerticalAlignment="Center" Margin="2,0,6,0" />
+                                <Button Content="Stop" Tag="{x:Bind Id, Mode=OneWay}" IsEnabled="{x:Bind CanStop, Mode=OneWay}"
+                                        ToolTipService.ToolTip="Quit this account's Claude completely" Click="OnStop" />
+                            </StackPanel>
+                        </StackPanel>
+                        <Button HorizontalAlignment="Right" Style="{StaticResource EditButtonStyle}" Padding="8,6" Tag="{x:Bind Id, Mode=OneWay}" Click="OnMore"
+                                ToolTipService.ToolTip="More options" AutomationProperties.Name="More options">
+                            <FontIcon Glyph="&#xE712;" FontSize="16" />
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
+    <ScrollViewer>
+        <StackPanel Padding="36,8,36,36" MaxWidth="1200" HorizontalAlignment="Stretch">
+            <TextBlock Text="Overview" Style="{StaticResource TitleTextBlockStyle}" Margin="0,0,0,4" />
+            <TextBlock Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" Margin="0,0,0,20"
+                       Text="Each account has its own Claude window and stays signed in. Several can be open at once." />
+            <ItemsRepeater ItemsSource="{x:Bind Accounts}" ItemTemplate="{StaticResource AccountCard}">
+                <ItemsRepeater.Layout>
+                    <UniformGridLayout MinItemWidth="320" MinColumnSpacing="12" MinRowSpacing="12" ItemsStretch="Fill" />
+                </ItemsRepeater.Layout>
+            </ItemsRepeater>
+            <HyperlinkButton Content="Refresh limits now" Click="OnRefresh" Margin="-12,16,0,0" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

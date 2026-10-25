@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.22621.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <RootNamespace>ClauDeck</RootNamespace>
+    <AssemblyName>ClauDeck</AssemblyName>
+    <Product>ClauDeck</Product>
+    <Description>Multiple Claude Desktops, in parallel</Description>
+    <Version>1.3.0</Version>
+    <Company>Faisal F Rafat</Company>
+    <Copyright>© 2026 Faisal F Rafat</Copyright>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Platforms>x64</Platforms>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <UseWinUI>true</UseWinUI>
+    <EnableMsixTooling>true</EnableMsixTooling>
+    <WindowsPackageType>None</WindowsPackageType>
+    <!-- Carries its own WinUI and its own .NET, so it starts on any Windows 10 or 11 PC
+         with nothing else to install, and no runtime update can stop it starting. -->
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <SelfContained>true</SelfContained>
+    <!-- Program.cs has its own Main: command-line modes and single-instance come first. -->
+    <DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
+  </PropertyGroup>
+
+  <!-- The icon is drawn by the app itself (see build.ps1), so the first build has none. -->
+  <PropertyGroup Condition="Exists('app.ico')">
+    <ApplicationIcon>app.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The parts of Windows App SDK 1.8.260921001 this app uses, named one by one. The
+         umbrella package also brings Windows AI (onnxruntime, DirectML) and Widgets,
+         about 45 MB this app never loads. Mica, Acrylic and every control live in
+         WinUI and InteractiveExperiences, which stay. -->
+    <PackageReference Include="Microsoft.WindowsAppSDK.Base" Version="1.8.251216001" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="1.8.260803002" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="1.8.260708001" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="1.8.260803003" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.DWrite" Version="1.8.25122902" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="1.8.260921001" />
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.9169" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.13" />
+  </ItemGroup>
+
+  <!-- Carrying its own WinUI means unpacking the whole Windows App Runtime, whichever
+       parts are referenced: the on-device AI engine (onnxruntime, DirectML, NPU
+       detection), Vision, semantic search, Workloads and Widgets come along, close to
+       half the app's size. ClauDeck calls none of them, and nothing of WinUI, windowing,
+       Mica, Acrylic or text rendering lives in these files. -->
+  <PropertyGroup>
+    <UnusedWindowsAppSDKFiles>\A(onnxruntime|DirectML|NPUDetect|Microsoft\.Windows\.(AI|Widgets|Workloads|SemanticSearch|Vision|VisionInternal|Internal\.Vision|Private\.Workloads)(\..*)?)\.(dll|winmd|mui)\z</UnusedWindowsAppSDKFiles>
+  </PropertyGroup>
+  <Target Name="LeaveOutUnusedWindowsAppSDKParts"
+          AfterTargets="AddMicrosoftWindowsAppSDKPayloadFilesFromMsix;AddMicrosoftWindowsAppSDKPayloadFilesFromComponents">
+    <ItemGroup>
+      <_UnusedWindowsAppSDKFile Include="@(None)"
+          Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('%(None.Filename)%(None.Extension)', '$(UnusedWindowsAppSDKFiles)', System.Text.RegularExpressions.RegexOptions.IgnoreCase))" />
+      <None Remove="@(_UnusedWindowsAppSDKFile)" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <Compile Remove="_winforms-version\**" />
+    <None Remove="_winforms-version\**" />
+  </ItemGroup>
+
+</Project>

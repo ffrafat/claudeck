@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClauDeck logo concepts</title>
+<style>
+  :root {
+    --clay: #D97757; --clay-deep: #B85C3E; --clay-mid: #E39A7E; --clay-light: #EFC4B2;
+    --ivory: #FAF9F5; --paper: #F0EEE6; --ink: #1F1E1D; --night: #262624; --muted: #8A8780;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 16px 64px; background: var(--paper); color: var(--ink);
+         font: 15px/1.5 "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif; }
+  main { max-width: 1080px; margin: 0 auto; }
+  h1 { font: 600 28px/1.2 "Segoe UI Variable Display", "Segoe UI", sans-serif; margin: 0 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 28px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .card { background: var(--ivory); border: 1px solid #E4E1D8; border-radius: 14px; padding: 18px; }
+  .card h2 { font-size: 16px; margin: 0 0 2px; }
+  .card p { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+  .tiles { display: flex; gap: 10px; margin-bottom: 12px; }
+  .tile { flex: 1; aspect-ratio: 1; border-radius: 12px; display: grid; place-items: center; }
+  .tile.light { background: var(--paper); }
+  .tile.dark { background: var(--night); }
+  .sizes { display: flex; align-items: end; gap: 12px; padding: 10px 12px; border-radius: 10px; background: #fff; border: 1px solid #ECE9E0; }
+  .sizes.dark { background: #2E2D2B; border-color: #3A3936; margin-top: 8px; }
+  .sizes span { font-size: 11px; color: var(--muted); margin-left: auto; }
+  .wordmark { margin-top: 36px; }
+  .lockups { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+  .lockup { display: flex; align-items: center; gap: 16px; padding: 24px; border-radius: 14px; }
+  .lockup.light { background: var(--ivory); border: 1px solid #E4E1D8; }
+  .lockup.dark { background: var(--night); color: var(--ivory); }
+  .name { font: 650 30px/1 "Segoe UI Variable Display", "Segoe UI", sans-serif; letter-spacing: -0.5px; }
+  .name b { color: var(--clay); font-weight: inherit; }
+  .tag { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .lockup.dark .tag { color: #B8B4AA; }
+  .note { margin-top: 28px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- A · Parallel deck: three cards fanned in parallel on a clay tile -->
+    <symbol id="a" viewBox="0 0 128 128">
+      <rect x="6" y="6" width="116" height="116" rx="28" fill="#D97757"/>
+      <g transform="rotate(-14 64 66)">
+        <rect x="31" y="34" width="16" height="62" rx="8" fill="#FAF9F5" opacity=".45"/>
+        <rect x="56" y="34" width="16" height="62" rx="8" fill="#FAF9F5" opacity=".72"/>
+        <rect x="81" y="34" width="16" height="62" rx="8" fill="#FAF9F5"/>
+      </g>
+    </symbol>
+    <!-- B · Stacked windows: three Claude windows, one in front -->
+    <symbol id="b" viewBox="0 0 128 128">
+      <rect x="44" y="14" width="66" height="78" rx="14" fill="#EFC4B2"/>
+      <rect x="31" y="25" width="66" height="78" rx="14" fill="#E39A7E"/>
+      <rect x="18" y="36" width="66" height="78" rx="14" fill="#D97757"/>
+      <rect x="30" y="49" width="30" height="7" rx="3.5" fill="#FAF9F5"/>
+      <rect x="30" y="62" width="42" height="7" rx="3.5" fill="#FAF9F5" opacity=".6"/>
+    </symbol>
+    <!-- C · Claw: a claw holding one card, the literal ClauDeck -->
+    <symbol id="c" viewBox="0 0 128 128">
+      <path d="M95.5 40.5 A38 38 0 1 0 95.5 87.5" fill="none" stroke="#D97757" stroke-width="17" stroke-linecap="round"/>
+      <rect x="58" y="48" width="44" height="32" rx="8" fill="#B85C3E" transform="rotate(-8 80 64)"/>
+      <rect x="66" y="58" width="20" height="5" rx="2.5" fill="#FAF9F5" transform="rotate(-8 80 64)"/>
+    </symbol>
+    <!-- D · Side by side: two windows running in parallel -->
+    <symbol id="d" viewBox="0 0 128 128">
+      <rect x="6" y="6" width="116" height="116" rx="28" fill="#D97757"/>
+      <rect x="24" y="32" width="36" height="64" rx="9" fill="#FAF9F5"/>
+      <rect x="68" y="32" width="36" height="64" rx="9" fill="#FAF9F5" opacity=".62"/>
+      <rect x="30" y="40" width="14" height="5" rx="2.5" fill="#D97757"/>
+      <rect x="74" y="40" width="14" height="5" rx="2.5" fill="#D97757"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main>
+  <h1>ClauDeck: logo concepts</h1>
+  <p class="lead">Multiple Claude Desktops, in parallel. Claude's clay and ivory colours, with original shapes and no sunburst. Each is shown on light and dark backgrounds, then at real icon sizes.</p>
+
+  <div class="grid">
+    <section class="card">
+      <h2>A · Parallel deck</h2>
+      <p>Three cards fanned in parallel. The simplest, and sharpest when small.</p>
+      <div class="tiles"><div class="tile light"><svg width="96" height="96"><use href="#a"/></svg></div><div class="tile dark"><svg width="96" height="96"><use href="#a"/></svg></div></div>
+      <div class="sizes"><svg width="48" height="48"><use href="#a"/></svg><svg width="32" height="32"><use href="#a"/></svg><svg width="24" height="24"><use href="#a"/></svg><svg width="16" height="16"><use href="#a"/></svg><span>48 · 32 · 24 · 16</span></div>
+      <div class="sizes dark"><svg width="48" height="48"><use href="#a"/></svg><svg width="32" height="32"><use href="#a"/></svg><svg width="24" height="24"><use href="#a"/></svg><svg width="16" height="16"><use href="#a"/></svg><span>taskbar, dark</span></div>
+    </section>
+
+    <section class="card">
+      <h2>B · Stacked windows</h2>
+      <p>Three app windows, one in front: you switch between them.</p>
+      <div class="tiles"><div class="tile light"><svg width="96" height="96"><use href="#b"/></svg></div><div class="tile dark"><svg width="96" height="96"><use href="#b"/></svg></div></div>
+      <div class="sizes"><svg width="48" height="48"><use href="#b"/></svg><svg width="32" height="32"><use href="#b"/></svg><svg width="24" height="24"><use href="#b"/></svg><svg width="16" height="16"><use href="#b"/></svg><span>48 · 32 · 24 · 16</span></div>
+      <div class="sizes dark"><svg width="48" height="48"><use href="#b"/></svg><svg width="32" height="32"><use href="#b"/></svg><svg width="24" height="24"><use href="#b"/></svg><svg width="16" height="16"><use href="#b"/></svg><span>taskbar, dark</span></div>
+    </section>
+
+    <section class="card">
+      <h2>C · Claw</h2>
+      <p>A claw holding a card: the name, drawn. The most playful.</p>
+      <div class="tiles"><div class="tile light"><svg width="96" height="96"><use href="#c"/></svg></div><div class="tile dark"><svg width="96" height="96"><use href="#c"/></svg></div></div>
+      <div class="sizes"><svg width="48" height="48"><use href="#c"/></svg><svg width="32" height="32"><use href="#c"/></svg><svg width="24" height="24"><use href="#c"/></svg><svg width="16" height="16"><use href="#c"/></svg><span>48 · 32 · 24 · 16</span></div>
+      <div class="sizes dark"><svg width="48" height="48"><use href="#c"/></svg><svg width="32" height="32"><use href="#c"/></svg><svg width="24" height="24"><use href="#c"/></svg><svg width="16" height="16"><use href="#c"/></svg><span>taskbar, dark</span></div>
+    </section>
+
+    <section class="card">
+      <h2>D · Side by side</h2>
+      <p>Two windows in parallel: says exactly what the app does.</p>
+      <div class="tiles"><div class="tile light"><svg width="96" height="96"><use href="#d"/></svg></div><div class="tile dark"><svg width="96" height="96"><use href="#d"/></svg></div></div>
+      <div class="sizes"><svg width="48" height="48"><use href="#d"/></svg><svg width="32" height="32"><use href="#d"/></svg><svg width="24" height="24"><use href="#d"/></svg><svg width="16" height="16"><use href="#d"/></svg><span>48 · 32 · 24 · 16</span></div>
+      <div class="sizes dark"><svg width="48" height="48"><use href="#d"/></svg><svg width="32" height="32"><use href="#d"/></svg><svg width="24" height="24"><use href="#d"/></svg><svg width="16" height="16"><use href="#d"/></svg><span>taskbar, dark</span></div>
+    </section>
+  </div>
+
+  <section class="wordmark">
+    <h1 style="font-size:20px;margin-bottom:12px">With the name</h1>
+    <div class="lockups">
+      <div class="lockup light"><svg width="64" height="64"><use href="#a"/></svg><div><div class="name">Clau<b>Deck</b></div><div class="tag">Multiple Claude Desktops, in parallel</div></div></div>
+      <div class="lockup dark"><svg width="64" height="64"><use href="#a"/></svg><div><div class="name">Clau<b>Deck</b></div><div class="tag">Multiple Claude Desktops, in parallel</div></div></div>
+      <div class="lockup light"><svg width="64" height="64"><use href="#c"/></svg><div><div class="name">Clau<b>Deck</b></div><div class="tag">Multiple Claude Desktops, in parallel</div></div></div>
+      <div class="lockup dark"><svg width="64" height="64"><use href="#d"/></svg><div><div class="name">Clau<b>Deck</b></div><div class="tag">Multiple Claude Desktops, in parallel</div></div></div>
+    </div>
+  </section>
+
+  <p class="note">Each account inside the app keeps its own coloured letter badge, so this logo only has to stand for ClauDeck itself.</p>
+</main>
+</body>
+</html>
